@@ -1,13 +1,19 @@
+
 # lambda-invoker.yml
 lambda-invoker.region: us-east-2
 lambda-invoker.functions:
+
   /v1/pets@get: PetsGetFunction
+
   /v1/pets@post: PetsPostFunction
+
   /v1/pets/{petId}@get: PetsPetIdGetFunction
+
   /v1/pets/{petId}@delete: PetsPetIdDeleteFunction
 
+
 # lambda-proxy.yml
-lambda-proxy.lambdaAppId: lambda-petstore-0.0.1-SNAPSHOT
+lambda-proxy.lambdaAppId: com.networknt.petstore-1.0.1
 
 # service.yml
 service.singletons:
@@ -34,7 +40,7 @@ unified-security.enabled: false
 unified-security.pathPrefixAuths:
   - prefix: /
     jwt: true
-    
+
 # header.yml
 header.enabled: true
 

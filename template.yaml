@@ -2,9 +2,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  petstore
+  com.networknt.petstore-1.0.1
 
-  Sample SAM Template for petstore
+  Sample SAM Template for com.networknt.petstore-1.0.1
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
@@ -15,23 +15,22 @@ Parameters:
   ParamStage:
     Type: String
     Description: Deployment stage.
-    Default: Prod
+    Default: test
   ParamServiceId:
     Type: String
     Description: Unique service id for your application
-    Default: lambda-petstore-1.0.0-SNAPSHOT
-
+    Default: com.networknt.petstore-1.0.1
 
 Resources:
   PetstoreFunctionRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: petstore-proxy-function-role
+      RoleName: petstore-function-role
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
           - Effect: Allow
-            Principal: 
+            Principal:
               Service: lambda.amazonaws.com
             Action:
             - "sts:AssumeRole"
@@ -47,6 +46,7 @@ Resources:
               Resource: "*"
 
   
+  
   PetsGetFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -60,6 +60,7 @@ Resources:
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
         Variables:
           PARAM1: VALUE
+      
     
   
   PetsPostFunction:
@@ -76,13 +77,6 @@ Resources:
         Variables:
           PARAM1: VALUE
       
-      Events:
-        PetsPost:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            Path: /v1/pets
-            Method: POST
-            
     
   
   PetsPetIdGetFunction:
@@ -99,13 +93,6 @@ Resources:
         Variables:
           PARAM1: VALUE
       
-      Events:
-        PetsPetIdGet:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            Path: /v1/pets/{petId}
-            Method: GET
-            
     
   
   PetsPetIdDeleteFunction:
@@ -122,24 +109,20 @@ Resources:
         Variables:
           PARAM1: VALUE
       
-      Events:
-        PetsPetIdDelete:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            Path: /v1/pets/{petId}
-            Method: DELETE
-            
-  PetstoreNativeLambdaFunction:
+    
+  
+
+
+  PetstoreNativeLambdaProxyFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      
       CodeUri: s3://networknt-native-lambda-jar-for-deployment-reference/lambda-native-2.1.34-SNAPSHOT.jar
       Handler: com.networknt.aws.lambda.proxy.LambdaProxy::handleRequest
       Layers:
-        - !Ref PetstoreDevConfigLayer
+        - !Ref PetstoreConfigLayer
       Runtime: java11
       MemorySize: 512
-      FunctionName: PetstoreNativeLambdaFunction
+      FunctionName: PetstoreNativeLambdaProxyFunction
       Role: !Sub ${PetstoreFunctionRole.Arn}
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
         Variables:
@@ -171,17 +154,36 @@ Resources:
           Properties:
             Path: /adm/logger
             Method: POST
-        PetstorePetsGet:
+        
+        PetsGet:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
             Path: /v1/pets
             Method: GET
-
-  PetstoreDevConfigLayer:
+        
+        PetsPost:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /v1/pets
+            Method: POST
+        
+        PetsPetIdGet:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /v1/pets/{petId}
+            Method: GET
+        
+        PetsPetIdDelete:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /v1/pets/{petId}
+            Method: DELETE
+        
+  PetstoreConfigLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
-      LayerName: sam-app-petstore-dev-config-layer
-      Description: Configuration for the petstore dev
+      LayerName: sam-app-petstore-config-layer
+      Description: Configuration for the petstore
       ContentUri: config/
       CompatibleRuntimes:
         - java11
@@ -189,3 +191,4 @@ Resources:
       LicenseInfo: 'MIT'
       RetentionPolicy: Retain
 
+  
