@@ -1,8 +1,10 @@
 # lambda-invoker.yml
 lambda-invoker.region: us-east-2
 lambda-invoker.functions:
-  /v1/pets@post: arn:aws:lambda:us-east-2:964637446810:function:PetsPostFunction
-  /v1/pets@get: arn:aws:lambda:us-east-2:964637446810:function:PetsGetFunction
+  /v1/pets@get: PetsGetFunction
+  /v1/pets@post: PetsPostFunction
+  /v1/pets/{petId}@get: PetsPetIdGetFunction
+  /v1/pets/{petId}@delete: PetsPetIdDeleteFunction
 
 # lambda-proxy.yml
 lambda-proxy.lambdaAppId: lambda-petstore-0.0.1-SNAPSHOT
@@ -29,7 +31,10 @@ security.enableVerifyJwt: false
 
 # unified-security.yml
 unified-security.enabled: false
-
+unified-security.pathPrefixAuths:
+  - prefix: /
+    jwt: true
+    
 # header.yml
 header.enabled: true
 
