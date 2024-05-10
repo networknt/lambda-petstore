@@ -34,6 +34,8 @@ Resources:
               Service: lambda.amazonaws.com
             Action:
             - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
       Policies:
         - PolicyName: DirectInvokePetstoreLambda
           PolicyDocument:
