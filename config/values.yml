@@ -77,4 +77,3 @@ sanitizer.enabled: true
 # limit.yml
 limit.enabled: true
 limit.rateLimit: 10/m 10000/d
-
