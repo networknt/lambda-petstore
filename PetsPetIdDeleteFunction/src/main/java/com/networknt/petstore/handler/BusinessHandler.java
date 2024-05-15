@@ -35,6 +35,7 @@ public class BusinessHandler {
         String output = "";
         output = "{\"id\":1,\"name\":\"Jessica Right\",\"tag\":\"pet\"}";
         response.withStatusCode(200)
+                .withIsBase64Encoded(false)
                 .withBody(output);
         return response;
     }

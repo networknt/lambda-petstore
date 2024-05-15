@@ -35,6 +35,7 @@ public class BusinessHandler {
         String output = "";
         output = "[{\"id\":1,\"name\":\"catten\",\"tag\":\"cat\"},{\"id\":2,\"name\":\"doggy\",\"tag\":\"dog\"}]";
         response.withStatusCode(200)
+                .withIsBase64Encoded(false)
                 .withBody(output);
         return response;
     }
