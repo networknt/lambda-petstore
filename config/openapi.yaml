@@ -24,7 +24,7 @@ paths:
           format: "int32"
       security:
       - petstore_auth:
-        - "read:pets"
+        - "portal.r"
       responses:
         "200":
           description: "An paged array of pets"
@@ -66,8 +66,8 @@ paths:
       - "pets"
       security:
       - petstore_auth:
-        - "read:pets"
-        - "write:pets"
+        - "portal.r"
+        - "portal.w"
       responses:
         "201":
           description: "Null response"
@@ -92,7 +92,7 @@ paths:
           type: "string"
       security:
       - petstore_auth:
-        - "read:pets"
+        - "portal.r"
       responses:
         "200":
           description: "Expected response to a valid request"
@@ -130,7 +130,7 @@ paths:
           type: "string"
       security:
       - petstore_auth:
-        - "write:pets"
+        - "portal.w"
       responses:
         "200":
           description: "Expected response to a valid request"
@@ -159,8 +159,8 @@ components:
         clientCredentials:
           tokenUrl: "https://localhost:6882/token"
           scopes:
-            write:pets: "modify pets in your account"
-            read:pets: "read your pets"
+            portal.w: "modify pets in your account"
+            portal.r: "read your pets"
   schemas:
     Pet:
       type: "object"
